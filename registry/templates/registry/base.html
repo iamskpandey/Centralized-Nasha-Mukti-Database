@@ -1,0 +1,48 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{% block title %}Nasha Mukti Database{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'registry/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'registry/buttons.css' %}" />
+    <link rel="stylesheet" href="{% static 'registry/forms.css' %}" />
+    <link rel="stylesheet" href="{% static 'registry/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'registry/tables.css' %}" />
+    <link rel="stylesheet" href="{% static 'registry/form-pages.css' %}" />
+  </head>
+  <body>
+    <header class="main-header">
+      <div class="container">
+        <h1>Centralised Nasha Mukti Database</h1>
+        <nav>
+          {% if user.is_authenticated %}
+           <span>Welcome, <strong>{{ user.username }}</strong></span>
+           <a href="{% url 'home' %}" class="nav-link">Dashboard</a>
+          {% if user.userprofile.role == 'super_admin' or user.userprofile.role == 'state_admin' %}
+            <a href="{% url 'reports_page' %}" class="nav-link">Reports</a>
+          {% endif %}
+          <form method="post" action="{% url 'logout' %}" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="nav-link-button">Logout</button>
+          </form>
+
+          {% else %}
+          <span>Please log in.</span>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">{% block content %} {% endblock %}</main>
+
+    <footer class="main-footer">
+      <div class="container">
+        <p>&copy; 2024 Ministry of Social Justice and Empowerment</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+{% extends 'registry/base.html' %}
+
+{% block title %}
+Login - NMD
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h2>Welcome Back</h2>
+    <p style="text-align: center; color: var(--text-light); margin-bottom: 2rem;">
+        Sign in to access the Nasha Mukti Database
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+            <p class="error">
+                Your username and password didn't match. Please try again.
+            </p>
+        {% endif %}
+
+        <div class="form-field">
+            <label for="id_username">Username:</label>
+            {{ form.username }}
+        </div>
+
+        <div class="form-field">
+            <label for="id_password">Password:</label>
+            {{ form.password }}
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+    </form>
+</div>
+{% endblock %}

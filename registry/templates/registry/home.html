@@ -1,0 +1,74 @@
+{% extends 'registry/base.html' %}
+
+{% block title %}
+Dashboard - NMD
+{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem">
+    <h2>Dashboard</h2>
+    <p style="color: var(--text-light); font-size: 1.05rem; margin-top: 0.5rem">
+        Welcome to the Centralised Nasha Mukti Database. Monitor and manage
+        beneficiaries and interventions.
+    </p>
+</div>
+
+<div class="stat-card-container">
+    <div class="stat-card">
+        <h3>{{ total_beneficiaries }}</h3>
+        <p>Total Beneficiaries</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>{{ total_interventions }}</h3>
+        <p>Total Interventions Logged</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>{{ total_centers }}</h3>
+        <p>Total Centers</p>
+    </div>
+</div>
+
+<div class="dashboard-links">
+    {% if user.userprofile.role == 'center_staff' or user.userprofile.role == 'super_admin' %}
+        <a href="{% url 'add_beneficiary' %}" class="btn-primary">Add New Beneficiary</a>
+    {% endif %}
+    <a href="{% url 'beneficiary_list' %}" class="btn-secondary">View All Beneficiaries</a>
+</div>
+
+<div class="recent-activity">
+    <h3>Recent Interventions</h3>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Beneficiary</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Logged By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for intervention in recent_interventions %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'beneficiary_detail' intervention.beneficiary.pk %}">
+                                {{ intervention.beneficiary.name }}
+                            </a>
+                        </td>
+                        <td>{{ intervention.get_intervention_type_display }}</td>
+                        <td>{{ intervention.date_of_intervention|date:"d M Y, h:i A" }}</td>
+                        <td>{{ intervention.staff_member.username }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No interventions logged yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

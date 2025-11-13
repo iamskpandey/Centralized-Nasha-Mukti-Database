@@ -1,0 +1,63 @@
+{% extends 'registry/base.html' %} {% block title %}{{ beneficiary.name }} -
+Details{% endblock %} {% block content %}
+<!-- Header Section -->
+<div class="detail-page-header">
+  <h1>{{ beneficiary.name }}</h1>
+  <div class="header-actions">
+    <a href="{% url 'intervention_history' beneficiary.pk %}" class="btn-white">
+      <span>📜 View History ({{ interventions.count }})</span>
+    </a>
+    {% if user.userprofile.role != 'state_admin' %}
+    <a href="{% url 'edit_beneficiary' beneficiary.pk %}" class="btn-white">
+      <span>✏️ Edit Beneficiary</span>
+    </a>
+    {% endif %}
+    <a href="{% url 'beneficiary_list' %}" class="btn-white">
+      <span>← Back to List</span>
+    </a>
+  </div>
+</div>
+
+<!-- Beneficiary Information Cards -->
+<div class="info-card-grid">
+  <div class="info-card">
+    <div class="info-card-label">Unique ID</div>
+    <div class="info-card-value">{{ beneficiary.unique_id }}</div>
+  </div>
+  <div class="info-card">
+    <div class="info-card-label">Date of Birth</div>
+    <div class="info-card-value">
+      {{ beneficiary.date_of_birth|date:"d M Y" }}
+    </div>
+  </div>
+  <div class="info-card">
+    <div class="info-card-label">Registered Center</div>
+    <div class="info-card-value">
+      {{ beneficiary.center.name }}, {{ beneficiary.center.city }}
+    </div>
+  </div>
+  <div class="info-card">
+    <div class="info-card-label">Registration Date</div>
+    <div class="info-card-value">
+      {{ beneficiary.date_registered|date:"d M Y, h:i A" }}
+    </div>
+  </div>
+</div>
+
+<!-- New Intervention Form -->
+{% if user.userprofile.role != 'state_admin' %}
+<div class="form-container-enhanced">
+  <div class="section-header">
+    <h3>📝 Log a New Intervention</h3>
+  </div>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="form-grid">{{ form.as_p }}</div>
+    <div class="form-footer">
+      <button type="submit" class="btn-primary btn-large">
+        <span>Save Intervention</span>
+      </button>
+    </div>
+  </form>
+</div>
+{% endif %} {% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'registry/base.html' %} 
+{% block title %}Beneficiary List{% endblock%}
+ {% block content %}
+<div style="margin-bottom: 2rem">
+  <h2>Beneficiary List</h2>
+  <p style="color: var(--text-light); font-size: 1.05rem; margin-top: 0.5rem">
+    Showing all registered beneficiaries in the database.
+  </p>
+</div>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Unique ID</th>
+        <th>Name</th>
+        <th>Date of Birth</th>
+        <th>Center</th>
+        <th>
+          {% if user.userprofile.role == 'state_admin' %} View Read-Only {% else %} View Details {% endif %}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for beneficiary in page_obj %}
+      <tr>
+        <td>{{ beneficiary.unique_id }}</td>
+        <td>{{ beneficiary.name }}</td>
+        <td>{{ beneficiary.date_of_birth|date:"d M Y" }}</td>
+        <td>{{ beneficiary.center.name }}</td>
+        <td>
+          <a
+            href="{% url 'beneficiary_detail' beneficiary.pk %}"
+            class="btn-secondary-list"
+            >View</a
+          >
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">No beneficiaries found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="pagination">
+    <span class="step-links">
+      {% if page_obj.has_previous %}
+      <a href="?page=1">&laquo; first</a>
+      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </span>
+  </div>
+</div>
+{% endblock %}

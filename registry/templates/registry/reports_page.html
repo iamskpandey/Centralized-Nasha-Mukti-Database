@@ -1,0 +1,41 @@
+{% extends 'registry/base.html' %} {% block title %}Center Reports{% endblock %}
+{% block content %}
+<div style="margin-bottom: 2rem">
+  <h2>Center-wise Report</h2>
+  <p style="color: var(--text-light); font-size: 1.05rem; margin-top: 0.5rem">
+    A comprehensive summary of activity across all registered centers, ordered
+    by beneficiary count.
+  </p>
+</div>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Center Name</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Beneficiary Count</th>
+        <th>Total Interventions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for center in centers_data %}
+      <tr>
+        <td>{{ center.name }}</td>
+        <td>{{ center.city }}</td>
+        <td>{{ center.state.name }}</td>
+        <td>{{ center.beneficiary_count }}</td>
+        <td>{{ center.intervention_count }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">
+          No centers found. (Have you added any in the /admin panel?)
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

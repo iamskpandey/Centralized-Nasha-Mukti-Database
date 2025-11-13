@@ -1,0 +1,173 @@
+{% extends 'registry/base.html' %} {% block title %}Confirm Delete - {{
+beneficiary.name }}{% endblock %} {% block content %}
+<div
+  class="form-page-header"
+  style="background: linear-gradient(135deg, #f56b6b 0%, #dc2626 100%)"
+>
+  <div class="header-content">
+    <div class="icon-wrapper" style="background: rgba(255, 255, 255, 0.2)">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M3 6h18"></path>
+        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+        <line x1="10" y1="11" x2="10" y2="17"></line>
+        <line x1="14" y1="11" x2="14" y2="17"></line>
+      </svg>
+    </div>
+    <div>
+      <h2 style="margin: 0">Delete Beneficiary</h2>
+      <p
+        style="
+          color: rgba(255, 255, 255, 0.95);
+          font-size: 1rem;
+          margin: 0.5rem 0 0 0;
+        "
+      >
+        Permanent deletion confirmation required
+      </p>
+    </div>
+  </div>
+  <a href="{% url 'beneficiary_detail' beneficiary.pk %}" class="btn-white">
+    <span>← Back to Profile</span>
+  </a>
+</div>
+
+<div class="form-container-enhanced">
+  <div style="text-align: center; margin-bottom: 2rem">
+    <div style="font-size: 4rem; margin-bottom: 1rem">⚠️</div>
+    <h3
+      style="
+        color: var(--danger-color);
+        margin: 0 0 0.5rem 0;
+        font-size: 1.5rem;
+      "
+    >
+      Critical Action
+    </h3>
+    <p style="color: var(--text-light); font-size: 1.05rem; margin: 0">
+      Are you sure you want to permanently delete this beneficiary?
+    </p>
+  </div>
+
+  <div
+    style="
+      background: var(--bg-light);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      border-left: 4px solid var(--danger-color);
+      margin-bottom: 2rem;
+    "
+  >
+    <h4
+      style="margin: 0 0 1.5rem 0; color: var(--text-dark); font-size: 1.2rem"
+    >
+      Beneficiary Information
+    </h4>
+    <div style="display: grid; gap: 1rem">
+      <div>
+        <strong style="color: var(--text-dark); font-size: 1.1rem"
+          >Name:</strong
+        >
+        <span
+          style="
+            color: var(--text-light);
+            margin-left: 0.5rem;
+            font-size: 1.1rem;
+          "
+          >{{ beneficiary.name }}</span
+        >
+      </div>
+      <div>
+        <strong style="color: var(--text-dark)">Unique ID:</strong>
+        <span style="color: var(--text-light); margin-left: 0.5rem"
+          >{{ beneficiary.unique_id }}</span
+        >
+      </div>
+      <div>
+        <strong style="color: var(--text-dark)">Center:</strong>
+        <span style="color: var(--text-light); margin-left: 0.5rem"
+          >{{ beneficiary.center.name }}, {{ beneficiary.center.city }}</span
+        >
+      </div>
+      <div>
+        <strong style="color: var(--text-dark)">Date of Birth:</strong>
+        <span style="color: var(--text-light); margin-left: 0.5rem"
+          >{{ beneficiary.date_of_birth|date:"d M Y" }}</span
+        >
+      </div>
+      <div>
+        <strong style="color: var(--text-dark)">Registered:</strong>
+        <span style="color: var(--text-light); margin-left: 0.5rem"
+          >{{ beneficiary.date_registered|date:"d M Y" }}</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+    style="
+      background: rgba(245, 87, 108, 0.15);
+      border: 2px solid var(--danger-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    "
+  >
+    <h4
+      style="
+        margin: 0 0 1rem 0;
+        color: var(--danger-color);
+        font-size: 1.15rem;
+        text-align: center;
+      "
+    >
+      ⚠️ Critical Warning
+    </h4>
+    <ul
+      style="
+        margin: 0;
+        padding-left: 1.5rem;
+        color: var(--text-dark);
+        line-height: 1.8;
+      "
+    >
+      <li>
+        <strong
+          >All associated intervention logs will be permanently deleted</strong
+        >
+      </li>
+      <li>This action cannot be undone or recovered</li>
+      <li>All historical data for this beneficiary will be lost</li>
+    </ul>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-footer" style="border-top: none; padding-top: 0">
+      <button
+        type="submit"
+        class="btn-danger btn-large"
+        style="font-size: 1.1rem"
+      >
+        <span>🗑️ Yes, Delete Permanently</span>
+      </button>
+      <a
+        href="{% url 'beneficiary_detail' beneficiary.pk %}"
+        class="btn-secondary"
+        style="padding: 1rem 2rem"
+        >Cancel</a
+      >
+    </div>
+  </form>
+</div>
+{% endblock %}

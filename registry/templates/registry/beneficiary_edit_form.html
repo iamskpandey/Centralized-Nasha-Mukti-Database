@@ -1,0 +1,109 @@
+{% extends 'registry/base.html' %} {% block title %}Edit {{ beneficiary.name
+}}{% endblock %} {% block content %}
+<div class="form-page-header">
+  <div class="header-content">
+    <div class="icon-wrapper">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+    </div>
+    <div>
+      <h2 style="margin: 0">Edit Beneficiary</h2>
+      <p
+        style="
+          color: rgba(255, 255, 255, 0.95);
+          font-size: 1rem;
+          margin: 0.5rem 0 0 0;
+        "
+      >
+        <strong>{{ beneficiary.name }}</strong>
+      </p>
+      <p
+        style="
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.9rem;
+          margin: 0.25rem 0 0 0;
+        "
+      >
+        ID: {{ beneficiary.unique_id }}
+      </p>
+    </div>
+  </div>
+  <a href="{% url 'beneficiary_detail' beneficiary.pk %}" class="btn-white">
+    <span>← Back to Profile</span>
+  </a>
+</div>
+
+<div class="form-container-enhanced">
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="form-grid">{{ form.as_p }}</div>
+
+    <div class="form-footer">
+      <button type="submit" class="btn-primary btn-large">
+        <span>💾 Save Changes</span>
+      </button>
+      <a
+        href="{% url 'beneficiary_detail' beneficiary.pk %}"
+        class="btn-secondary"
+        >Cancel</a
+      >
+    </div>
+  </form>
+</div>
+
+<div
+  class="form-container-enhanced"
+  style="border: 2px solid var(--danger-color); margin-top: 2rem"
+>
+  <div
+    style="
+      background: rgba(245, 87, 108, 0.1);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+    "
+  >
+    <h3
+      style="
+        color: var(--danger-color);
+        margin: 0 0 0.5rem 0;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      "
+    >
+      <span>⚠️</span> Danger Zone
+    </h3>
+    <p style="margin: 0; color: var(--text-dark); font-size: 0.95rem">
+      Once you delete this beneficiary, there is no going back. All associated
+      intervention logs will also be permanently deleted.
+    </p>
+  </div>
+
+  <div style="text-align: center">
+    <a
+      href="{% url 'delete_beneficiary' beneficiary.pk %}"
+      class="btn-danger btn-large"
+      style="display: inline-flex; align-items: center; gap: 0.5rem"
+    >
+      <span>🗑️ Delete This Beneficiary</span>
+    </a>
+  </div>
+</div>
+{% endblock %}
